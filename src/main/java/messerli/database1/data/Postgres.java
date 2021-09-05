@@ -41,25 +41,24 @@ public class Postgres {
 		List<String> list = new ArrayList<>();
 
 		try {
-			String SQL = null;
 
-			/*
-			 * String SQL = "select taube.taubenid, flug.flugid, taubenflug.endzeit -
-			 * flug.auflasszeit as flugzeit from taube, flug, taubenflug where
-			 * taube.taubenid = ? and flug.flugid = ? and taube.taubenid = ? and flug.flugid
-			 * = ? ";
-			 */
+			String SQL = "select taube.taubenid, taubenflug.rang ,taubenflug.endzeit - flug.auflasszeit as flugzeit from taube, flug, taubenflug where  taube.taubenid = taubenflug.taubenid and flug.flugid = taubenflug.flugid and taube.taubenid = ? and flug.flugid = ?";
+
+			// String SQL "select taube.taubenid, flug.flugid, taubenflug.endzeit -
+			// flug.auflasszeit as flugzeit from taube, flug, taubenflug where
+			// taube.taubenid = taubenflug.taubenid and flug.flugid = taubenflug.flugid and
+			// taube.taubenid = ? and flug.flugid = ?";
+
 			PreparedStatement ps = conn.prepareStatement(SQL);
 
-			/*
-			 * ps.setString(1, taubenflug.taubenid); ps.setString(2, taubenflug.flugid);
-			 * ps.setString(3, this.idtaube); ps.setString(4, this.idflug);
-			 */
+			ps.setString(1, "CH-17-7067");
+			ps.setString(2, "Messkirch-1-2018");
+
 			// stmt = conn.createStatement();
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				list.add(rs.getString(1)); // + " " + rs.getString(6));
+				list.add(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
