@@ -12,24 +12,28 @@ public class CashierView extends HBox {
     public CashierView(CashierViewModel cashierViewModel) {
 
         Insets insets = new Insets(10.0f, 40.0f, 10.0f, 40.0f);
-        // Insets insetsText = new Insets(250.0f, 200.0f, 250.0f, 200.0f);
 
         TextField tfTaube = new TextField();
         tfTaube.setPromptText("TaubenId eingeben");
         TextField tfFlug = new TextField();
         tfFlug.setPromptText("FlugId eingeben");
         TextArea taTaubenflug = new TextArea();
+        TextField tfEndzeit = new TextField();
+        tfEndzeit.setPromptText("Endzeit eingeben");
 
         Button clearbtntaube = new Button("clear");
         Button clearbtnflug = new Button("clear");
+        Button clearbtnendzeit = new Button("clear");
         Button btntaubenfluege = new Button("TAUBENFLUEGE");
 
         tfTaube.setPadding(insets);
         tfFlug.setPadding(insets);
-        // taTaubenflug.setPadding(insetsText);
+        tfEndzeit.setPadding(insets);
+
         btntaubenfluege.setPadding(insets);
         clearbtntaube.setPadding(insets);
         clearbtnflug.setPadding(insets);
+        clearbtnendzeit.setPadding(insets);
 
         GridPane gridPane = new GridPane();
         gridPane.setPadding(insets);
@@ -42,17 +46,15 @@ public class CashierView extends HBox {
         gridPane.add(clearbtntaube, 1, 0);
         gridPane.add(clearbtnflug, 1, 1);
         gridPane.add(taTaubenflug, 1, 2);
+        gridPane.add(tfEndzeit, 0, 3);
+        gridPane.add(clearbtnendzeit, 1, 3);
 
         this.getChildren().add(gridPane);
 
         tfTaube.textProperty().bindBidirectional(cashierViewModel.getTaubenId());
         tfFlug.textProperty().bindBidirectional(cashierViewModel.getFlugId());
         taTaubenflug.textProperty().bindBidirectional(cashierViewModel.getTaubenflug());
-
-        tfTaube.setOnAction(event -> {
-            String string = tfTaube.getText();
-            cashierViewModel.taubeBtnClicked(string);
-        });
+        tfEndzeit.textProperty().bindBidirectional(cashierViewModel.getEndzeit());
 
         clearbtntaube.setOnAction(event -> {
 
@@ -65,6 +67,10 @@ public class CashierView extends HBox {
 
         btntaubenfluege.setOnAction(event -> {
             cashierViewModel.resultTaubenFlugBtnClicked();
+        });
+
+        clearbtnendzeit.setOnAction(event -> {
+            cashierViewModel.clearBtnClickedEndzeit();
         });
 
     }

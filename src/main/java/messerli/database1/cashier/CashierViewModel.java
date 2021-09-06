@@ -2,70 +2,55 @@ package messerli.database1.cashier;
 
 import java.util.List;
 
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import messerli.database1.data.Postgres;
+import messerli.database1.data.PostgresDAO;
+import messerli.database1.postgres_classes.SelectTaubenflug;
 
 public class CashierViewModel {
 
     private StringProperty taubenId;
     private StringProperty flugId;
     private StringProperty taubenflugtext;
+    private StringProperty endzeit;
 
     public CashierViewModel(DataModel model) {
         taubenId = new SimpleStringProperty("");
         flugId = new SimpleStringProperty("");
         taubenflugtext = new SimpleStringProperty("");
-
-        // this.taubenId.setValue(model.getTaubenId());
-        // this.flugId.setValue(model.getFlugId());
+        endzeit = new SimpleStringProperty("");
 
         model.addStateChangedLister(new StateChangedListener() {
 
             @Override
             public void updatedValues(DataModel data, String taubeId, String flightId) {
-                // taubenId.setValue(taubeId);
-                // flugId.setValue(flightId);
 
             }
         });
 
     }
 
-    public void taubeBtnClicked(String string) {
-        this.taubenId.setValue(string);
-    }
-
-    public void setIdBtnClicked(String string) {
-        this.taubenId.setValue(string);
-    }
-
-    public void setFlugIdBtnClicked(String string) {
-        this.flugId.setValue(string);
-    }
-
     public void resultTaubenFlugBtnClicked() {
-
-        // this.taubenflugtext.setValue(string);
 
         Postgres postgres = new Postgres();
         postgres.connect();
         String string = "";
-        List<String> list = Postgres.main1();
+        PostgresDAO pdao = new SelectTaubenflug(taubenId.get(), flugId.get());
+        System.out.println(taubenId.get());
+        List<String> list = Postgres.main1(pdao);
         int i = 0;
         for (String str : list) {
             if (i % 5 == 0) {
                 string = string.concat(str + "\n");
+            } else {
+                string = string.concat(str);
             }
-            string = string.concat(str);
+
             i++;
         }
-        /*
-         * list.stream().forEach((value) -> { String str = str.concat(value + "  ");
-         * System.out.println(value);
-         * 
-         * });
-         */
+
         this.taubenflugtext.setValue(string);
         System.out.println(string);
 
@@ -89,6 +74,14 @@ public class CashierViewModel {
 
     public StringProperty getTaubenflug() {
         return this.taubenflugtext;
+    }
+
+    public StringProperty getEndzeit() {
+        return this.endzeit;
+    }
+
+    public void clearBtnClickedEndzeit() {
+        this.endzeit.setValue("");
     }
 
 }
