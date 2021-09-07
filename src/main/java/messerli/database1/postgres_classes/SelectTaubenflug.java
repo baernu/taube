@@ -132,13 +132,18 @@ public class SelectTaubenflug implements PostgresDAO {
 
         try {
 
-            String SQL = "select taubenflug.taubenid, count(taubenflug.preis = ?) from taubenflug, flug where taubenflug.zuechter = ? and flug.saison = ? group by taubenflug.taubenid order by count(taubenflug.preis) desc, taubenflug.taubenid;";
-
+            // String SQL = "select taubenflug.taubenid, count(taubenflug.preis = ?) from
+            // taubenflug, flug where taubenflug.zuechter = ? and flug.saison = ? group by
+            // taubenflug.taubenid order by count(taubenflug.preis) desc,
+            // taubenflug.taubenid;";
+            String SQL = "select taubenflug.taubenid, coalesce (sum(case when taubenflug.preis then ? else ? end),?) from  taubenflug, flug where taubenflug.zuechter = ? and flug.saison = ? group by taubenflug.taubenid order by count(taubenflug.preis) desc, taubenflug.taubenid;";
             ps = conn.prepareStatement(SQL);
 
-            ps.setBoolean(1, true);
-            ps.setString(2, this.zuechter);
-            ps.setInt(3, this.saison);
+            ps.setInt(1, 1);
+            ps.setInt(2, 0);
+            ps.setInt(3, 0);
+            ps.setString(4, this.zuechter);
+            ps.setInt(5, this.saison);
 
             rs = ps.executeQuery();
 
