@@ -11,5 +11,5 @@ public interface PostgresDAO {
 
     List<String> drop(Connection conn);
 
-    void create(Connection conn);
+    List<String> create(Connection conn);
 }

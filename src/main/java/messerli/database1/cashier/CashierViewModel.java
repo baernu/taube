@@ -15,12 +15,20 @@ public class CashierViewModel {
     private StringProperty flugId;
     private StringProperty taubenflugtext;
     private StringProperty endzeit;
+    private StringProperty preis;
+    private StringProperty rang;
+    private StringProperty distance;
+    private StringProperty besitzer;
 
     public CashierViewModel(DataModel model) {
         taubenId = new SimpleStringProperty("");
         flugId = new SimpleStringProperty("");
         taubenflugtext = new SimpleStringProperty("");
         endzeit = new SimpleStringProperty("");
+        preis = new SimpleStringProperty("");
+        rang = new SimpleStringProperty("");
+        distance = new SimpleStringProperty("");
+        besitzer = new SimpleStringProperty("");
 
         model.addStateChangedLister(new StateChangedListener() {
 
@@ -82,6 +90,65 @@ public class CashierViewModel {
 
     public void clearBtnClickedEndzeit() {
         this.endzeit.setValue("");
+    }
+
+    public StringProperty getPreis() {
+        return this.preis;
+    }
+
+    public void clearBtnClickedPreis() {
+        this.preis.setValue("");
+
+    }
+
+    public StringProperty getRang() {
+        return this.rang;
+    }
+
+    public void clearBtnClickedRang() {
+        this.rang.setValue("");
+    }
+
+    public StringProperty getDistance() {
+        return this.distance;
+    }
+
+    public void clearBtnClickedDistance() {
+        this.distance.setValue("");
+        ;
+    }
+
+    public StringProperty getBesitzer() {
+        return this.besitzer;
+    }
+
+    public void clearBtnClickedBesitzer() {
+        this.besitzer.setValue("");
+        ;
+    }
+
+    public void createTaubenFlugBtnClicked() {
+        String string = "";
+        Postgres postgres = new Postgres();
+        postgres.connect();
+        PostgresDAO pdao = new SelectTaubenflug(taubenId.get(), flugId.get(), endzeit.get(), preis.get(), rang.get(),
+                distance.get(), besitzer.get());
+
+        List<String> list = Postgres.main2(pdao);
+        int i = 0;
+        for (String str : list) {
+            if (i % 5 == 0) {
+                string = string.concat(str + "\n");
+            } else {
+                string = string.concat(str);
+            }
+
+            i++;
+        }
+
+        this.taubenflugtext.setValue(string);
+        System.out.println(string);
+
     }
 
 }

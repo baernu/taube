@@ -27,13 +27,13 @@ public class SelectTaubenflug implements PostgresDAO {
         this.idFlug = idFlug;
     }
 
-    public SelectTaubenflug(String idTaube, String idFlug, java.sql.Timestamp endzeit, boolean preis, int rang,
-            double distance, String zuechter) {
+    public SelectTaubenflug(String idTaube, String idFlug, String endzeit, String preis, String rang, String distance,
+            String zuechter) {
         this(idTaube, idFlug);
-        this.endzeit = endzeit;
-        this.preis = preis;
-        this.rang = rang;
-        this.distance = distance;
+        this.endzeit = java.sql.Timestamp.valueOf(endzeit);
+        this.preis = Boolean.valueOf(preis);
+        this.rang = Integer.parseInt(rang);
+        this.distance = Double.parseDouble(distance);
         this.zuechter = zuechter;
 
     }
@@ -81,7 +81,8 @@ public class SelectTaubenflug implements PostgresDAO {
     }
 
     @Override
-    public void create(Connection conn) {
+    public List<String> create(Connection conn) {
+        List<String> list = new ArrayList<>();
         try {
             String SQL = "insert into taubenflug (taubenid, flugid, endzeit, preis, rang, distance, zuechter) values (?,?,?,?,?,?,?)";
             ps = conn.prepareStatement(SQL);
@@ -94,9 +95,15 @@ public class SelectTaubenflug implements PostgresDAO {
             ps.setString(7, this.zuechter);
 
             rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return list;
 
     }
 

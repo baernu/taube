@@ -36,4 +36,8 @@ public class Postgres {
 
 	}
 
+	public static List<String> main2(PostgresDAO pdao) {
+		return pdao.create(conn);
+	}
+
 }
