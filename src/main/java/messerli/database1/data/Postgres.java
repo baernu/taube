@@ -40,4 +40,12 @@ public class Postgres {
 		return pdao.create(conn);
 	}
 
+	public static int main3(PostgresDAO pdao) {
+		return pdao.update(conn);
+	}
+
+	public static List<String> main4(PostgresDAO pdao) {
+		return pdao.list(conn);
+	}
+
 }

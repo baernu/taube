@@ -19,6 +19,7 @@ public class CashierViewModel {
     private StringProperty rang;
     private StringProperty distance;
     private StringProperty besitzer;
+    private StringProperty saison;
 
     public CashierViewModel(DataModel model) {
         taubenId = new SimpleStringProperty("");
@@ -29,6 +30,7 @@ public class CashierViewModel {
         rang = new SimpleStringProperty("");
         distance = new SimpleStringProperty("");
         besitzer = new SimpleStringProperty("");
+        saison = new SimpleStringProperty("");
 
         model.addStateChangedLister(new StateChangedListener() {
 
@@ -127,17 +129,37 @@ public class CashierViewModel {
         ;
     }
 
-    public void createTaubenFlugBtnClicked() {
-        String string = "";
+    public void updateTaubenFlugBtnClicked() {
         Postgres postgres = new Postgres();
         postgres.connect();
         PostgresDAO pdao = new SelectTaubenflug(taubenId.get(), flugId.get(), endzeit.get(), preis.get(), rang.get(),
                 distance.get(), besitzer.get());
 
-        List<String> list = Postgres.main2(pdao);
-        int i = 0;
+        int i = Postgres.main3(pdao);
+
+        this.taubenflugtext.setValue(String.valueOf(i));
+        System.out.println(i);
+
+    }
+
+    public StringProperty getSaison() {
+        return this.saison;
+    }
+
+    public void clearBtnClickedSaison() {
+        this.saison.setValue("");
+    }
+
+    public void saisonErgebnis() {
+        Postgres postgres = new Postgres();
+        postgres.connect();
+        String string = "";
+        PostgresDAO pdao = new SelectTaubenflug(besitzer.get(), Integer.parseInt(saison.get()));
+        // System.out.println(taubenId.get());
+        List<String> list = Postgres.main4(pdao);
+        int i = 1;
         for (String str : list) {
-            if (i % 5 == 0) {
+            if (i % 1 == 0) {
                 string = string.concat(str + "\n");
             } else {
                 string = string.concat(str);
@@ -148,7 +170,6 @@ public class CashierViewModel {
 
         this.taubenflugtext.setValue(string);
         System.out.println(string);
-
     }
 
 }

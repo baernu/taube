@@ -7,9 +7,11 @@ public interface PostgresDAO {
 
     List<String> select(Connection conn);
 
-    List<String> update(Connection conn);
+    int update(Connection conn);
 
     List<String> drop(Connection conn);
 
     List<String> create(Connection conn);
+
+    List<String> list(Connection conn);
 }

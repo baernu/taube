@@ -1,6 +1,5 @@
 package messerli.database1.cashier;
 
-import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -29,16 +28,20 @@ public class CashierView extends HBox {
         tfDistance.setPromptText("Distanz eingeben");
         TextField tfBesitzer = new TextField();
         tfBesitzer.setPromptText("Besitzer eingeben");
+        TextField tfSaison = new TextField();
+        tfSaison.setPromptText("Saison eingeben");
 
         Button clearbtntaube = new Button("clear");
         Button clearbtnflug = new Button("clear");
         Button clearbtnendzeit = new Button("clear");
         Button btntaubenfluege = new Button("TAUBENFLUEGE");
-        Button btncreatetaubenflug = new Button("create Taubenflug");
+        Button btnupdatetaubenflug = new Button("update Taubenflug");
         Button clearbtnpreis = new Button("clear");
         Button clearbtnrang = new Button("clear");
         Button clearbtndistance = new Button("clear");
         Button clearbtnbesitzer = new Button("clear");
+        Button clearbtnsaison = new Button("clear");
+        Button btnsaisonergebnis = new Button("Saisonergebnis");
 
         tfTaube.setPadding(insets);
         tfFlug.setPadding(insets);
@@ -47,9 +50,10 @@ public class CashierView extends HBox {
         tfRang.setPadding(insets);
         tfDistance.setPadding(insets);
         tfBesitzer.setPadding(insets);
+        tfSaison.setPadding(insets);
 
         btntaubenfluege.setPadding(insets);
-        btncreatetaubenflug.setPadding(insets);
+        btnupdatetaubenflug.setPadding(insets);
         clearbtntaube.setPadding(insets);
         clearbtnflug.setPadding(insets);
         clearbtnendzeit.setPadding(insets);
@@ -57,6 +61,8 @@ public class CashierView extends HBox {
         clearbtnrang.setPadding(insets);
         clearbtndistance.setPadding(insets);
         clearbtnbesitzer.setPadding(insets);
+        clearbtnsaison.setPadding(insets);
+        btnsaisonergebnis.setPadding(insets);
 
         GridPane gridPane = new GridPane();
         gridPane.setPadding(insets);
@@ -80,7 +86,10 @@ public class CashierView extends HBox {
         gridPane.add(clearbtndistance, 1, 6);
         gridPane.add(tfBesitzer, 0, 7);
         gridPane.add(clearbtnbesitzer, 1, 7);
-        gridPane.add(btncreatetaubenflug, 0, 8);
+        gridPane.add(btnupdatetaubenflug, 0, 8);
+        gridPane.add(tfSaison, 0, 9);
+        gridPane.add(clearbtnsaison, 1, 9);
+        gridPane.add(btnsaisonergebnis, 0, 10);
 
         this.getChildren().add(gridPane);
 
@@ -92,6 +101,7 @@ public class CashierView extends HBox {
         tfRang.textProperty().bindBidirectional(cashierViewModel.getRang());
         tfDistance.textProperty().bindBidirectional(cashierViewModel.getDistance());
         tfBesitzer.textProperty().bindBidirectional(cashierViewModel.getBesitzer());
+        tfSaison.textProperty().bindBidirectional(cashierViewModel.getSaison());
 
         clearbtntaube.setOnAction(event -> {
 
@@ -106,7 +116,7 @@ public class CashierView extends HBox {
             cashierViewModel.resultTaubenFlugBtnClicked();
         });
 
-        btncreatetaubenflug.setOnAction(event -> cashierViewModel.createTaubenFlugBtnClicked());
+        btnupdatetaubenflug.setOnAction(event -> cashierViewModel.updateTaubenFlugBtnClicked());
 
         clearbtnendzeit.setOnAction(event -> {
             cashierViewModel.clearBtnClickedEndzeit();
@@ -119,6 +129,10 @@ public class CashierView extends HBox {
         clearbtndistance.setOnAction(event -> cashierViewModel.clearBtnClickedDistance());
 
         clearbtnbesitzer.setOnAction(event -> cashierViewModel.clearBtnClickedBesitzer());
+
+        clearbtnsaison.setOnAction(event -> cashierViewModel.clearBtnClickedSaison());
+
+        btnsaisonergebnis.setOnAction(event -> cashierViewModel.saisonErgebnis());
 
     }
 
