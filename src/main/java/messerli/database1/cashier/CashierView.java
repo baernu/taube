@@ -30,12 +30,14 @@ public class CashierView extends HBox {
         tfBesitzer.setPromptText("Besitzer eingeben");
         TextField tfSaison = new TextField();
         tfSaison.setPromptText("Saison eingeben");
+        TextField tfMinutenMeter = new TextField();
+        tfMinutenMeter.setPromptText("Abfrage Minutenmeter");
 
         Button clearbtntaube = new Button("clear");
         Button clearbtnflug = new Button("clear");
         Button clearbtnendzeit = new Button("clear");
-        Button btntaubenfluege = new Button("TAUBENFLUEGE");
-        Button btnupdatetaubenflug = new Button("update Taubenflug");
+        Button btntaubenfluege = new Button("Taube und Flug");
+        Button btnupdatetaubenflug = new Button("update Taube und Flug");
         Button clearbtnpreis = new Button("clear");
         Button clearbtnrang = new Button("clear");
         Button clearbtndistance = new Button("clear");
@@ -43,6 +45,7 @@ public class CashierView extends HBox {
         Button clearbtnsaison = new Button("clear");
         Button btnsaisonergebnis = new Button("Saisonergebnis");
         Button btnpercent = new Button("Prozent über Fluggeschw.");
+        Button clearbtnminutenmeter = new Button("clear");
 
         tfTaube.setPadding(insets);
         tfFlug.setPadding(insets);
@@ -52,6 +55,7 @@ public class CashierView extends HBox {
         tfDistance.setPadding(insets);
         tfBesitzer.setPadding(insets);
         tfSaison.setPadding(insets);
+        tfMinutenMeter.setPadding(insets);
 
         btntaubenfluege.setPadding(insets);
         btnupdatetaubenflug.setPadding(insets);
@@ -65,6 +69,7 @@ public class CashierView extends HBox {
         clearbtnsaison.setPadding(insets);
         btnsaisonergebnis.setPadding(insets);
         btnpercent.setPadding(insets);
+        clearbtnminutenmeter.setPadding(insets);
 
         GridPane gridPane = new GridPane();
         gridPane.setPadding(insets);
@@ -93,6 +98,8 @@ public class CashierView extends HBox {
         gridPane.add(clearbtnsaison, 1, 9);
         gridPane.add(btnsaisonergebnis, 0, 10);
         gridPane.add(btnpercent, 1, 10);
+        gridPane.add(tfMinutenMeter, 0, 11);
+        gridPane.add(clearbtnminutenmeter, 1, 11);
 
         this.getChildren().add(gridPane);
 
@@ -105,6 +112,7 @@ public class CashierView extends HBox {
         tfDistance.textProperty().bindBidirectional(cashierViewModel.getDistance());
         tfBesitzer.textProperty().bindBidirectional(cashierViewModel.getBesitzer());
         tfSaison.textProperty().bindBidirectional(cashierViewModel.getSaison());
+        tfMinutenMeter.textProperty().bindBidirectional(cashierViewModel.getMinutenMeter());
 
         clearbtntaube.setOnAction(event -> {
 
@@ -138,6 +146,8 @@ public class CashierView extends HBox {
         btnsaisonergebnis.setOnAction(event -> cashierViewModel.saisonErgebnis());
 
         btnpercent.setOnAction(event -> cashierViewModel.percent());
+
+        clearbtnminutenmeter.setOnAction(event -> cashierViewModel.clearBtnClickedMinutenMeter());
 
     }
 

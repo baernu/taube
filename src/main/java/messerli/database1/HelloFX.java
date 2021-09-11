@@ -35,7 +35,7 @@ public class HelloFX extends Application {
 		CashierView cashierView = new CashierView(new CashierViewModel(datamodel));
 		hbox.getChildren().add(cashierView);
 		vbox.getChildren().add(hbox);
-		Scene scene = new Scene(vbox, 800, 800);
+		Scene scene = new Scene(vbox, 800, 900);
 
 		stage.setScene(scene);
 		stage.show();

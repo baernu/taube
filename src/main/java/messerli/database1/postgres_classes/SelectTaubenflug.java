@@ -20,6 +20,7 @@ public class SelectTaubenflug implements PostgresDAO {
     private double distance;
     private String besitzer;
     private int saison;
+    private int minutenmeter;
 
     public SelectTaubenflug(String besitzer, int saison) {
         this.besitzer = besitzer;
@@ -29,6 +30,12 @@ public class SelectTaubenflug implements PostgresDAO {
     public SelectTaubenflug(String idTaube, String idFlug) {
         this.idTaube = idTaube;
         this.idFlug = idFlug;
+    }
+
+    public SelectTaubenflug(String idTaube, String idFlug, String minutenmeter) {
+        this.idTaube = idTaube;
+        this.idFlug = idFlug;
+        this.minutenmeter = Integer.parseInt(minutenmeter);
     }
 
     public SelectTaubenflug(String idTaube, String idFlug, String endzeit, String preis, String rang, String distance,
@@ -165,7 +172,7 @@ public class SelectTaubenflug implements PostgresDAO {
             ps.setString(1, this.idTaube.substring(0, 5).concat("%"));
             ps.setString(2, this.idFlug);
             ps.setInt(3, 60);
-            ps.setInt(4, 680);
+            ps.setInt(4, this.minutenmeter);
             ps.setInt(5, 100);
             ps.setString(6, this.idTaube.substring(0, 5).concat("%"));
             ps.setString(7, this.idFlug);

@@ -20,6 +20,7 @@ public class CashierViewModel {
     private StringProperty distance;
     private StringProperty besitzer;
     private StringProperty saison;
+    private StringProperty minutenmeter;
 
     public CashierViewModel(DataModel model) {
         taubenId = new SimpleStringProperty("");
@@ -31,6 +32,7 @@ public class CashierViewModel {
         distance = new SimpleStringProperty("");
         besitzer = new SimpleStringProperty("");
         saison = new SimpleStringProperty("");
+        minutenmeter = new SimpleStringProperty("");
 
         model.addStateChangedLister(new StateChangedListener() {
 
@@ -176,7 +178,7 @@ public class CashierViewModel {
         Postgres postgres = new Postgres();
         postgres.connect();
         String string = "";
-        PostgresDAO pdao = new SelectTaubenflug(taubenId.get(), flugId.get());
+        PostgresDAO pdao = new SelectTaubenflug(taubenId.get(), flugId.get(), minutenmeter.get());
         List<String> list = Postgres.main5(pdao);
         int i = 1;
         for (String str : list) {
@@ -191,6 +193,14 @@ public class CashierViewModel {
 
         this.taubenflugtext.setValue(string);
         System.out.println(string);
+    }
+
+    public StringProperty getMinutenMeter() {
+        return this.minutenmeter;
+    }
+
+    public void clearBtnClickedMinutenMeter() {
+        this.minutenmeter.setValue("");
     }
 
 }
