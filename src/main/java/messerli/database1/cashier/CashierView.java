@@ -42,6 +42,7 @@ public class CashierView extends HBox {
         Button clearbtnbesitzer = new Button("clear");
         Button clearbtnsaison = new Button("clear");
         Button btnsaisonergebnis = new Button("Saisonergebnis");
+        Button btnpercent = new Button("Prozent über Fluggeschw.");
 
         tfTaube.setPadding(insets);
         tfFlug.setPadding(insets);
@@ -63,6 +64,7 @@ public class CashierView extends HBox {
         clearbtnbesitzer.setPadding(insets);
         clearbtnsaison.setPadding(insets);
         btnsaisonergebnis.setPadding(insets);
+        btnpercent.setPadding(insets);
 
         GridPane gridPane = new GridPane();
         gridPane.setPadding(insets);
@@ -90,6 +92,7 @@ public class CashierView extends HBox {
         gridPane.add(tfSaison, 0, 9);
         gridPane.add(clearbtnsaison, 1, 9);
         gridPane.add(btnsaisonergebnis, 0, 10);
+        gridPane.add(btnpercent, 1, 10);
 
         this.getChildren().add(gridPane);
 
@@ -133,6 +136,8 @@ public class CashierView extends HBox {
         clearbtnsaison.setOnAction(event -> cashierViewModel.clearBtnClickedSaison());
 
         btnsaisonergebnis.setOnAction(event -> cashierViewModel.saisonErgebnis());
+
+        btnpercent.setOnAction(event -> cashierViewModel.percent());
 
     }
 

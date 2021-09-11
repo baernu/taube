@@ -14,4 +14,6 @@ public interface PostgresDAO {
     List<String> create(Connection conn);
 
     List<String> list(Connection conn);
+
+    List<String> percent(Connection conn);
 }

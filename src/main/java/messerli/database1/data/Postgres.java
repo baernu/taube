@@ -48,4 +48,8 @@ public class Postgres {
 		return pdao.list(conn);
 	}
 
+	public static List<String> main5(PostgresDAO pdao) {
+		return pdao.percent(conn);
+	}
+
 }

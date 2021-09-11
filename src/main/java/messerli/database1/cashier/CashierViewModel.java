@@ -172,4 +172,25 @@ public class CashierViewModel {
         System.out.println(string);
     }
 
+    public void percent() {
+        Postgres postgres = new Postgres();
+        postgres.connect();
+        String string = "";
+        PostgresDAO pdao = new SelectTaubenflug(taubenId.get(), flugId.get());
+        List<String> list = Postgres.main5(pdao);
+        int i = 1;
+        for (String str : list) {
+            if (i % 1 == 0) {
+                string = string.concat(str + "\n");
+            } else {
+                string = string.concat(str);
+            }
+
+            i++;
+        }
+
+        this.taubenflugtext.setValue(string);
+        System.out.println(string);
+    }
+
 }

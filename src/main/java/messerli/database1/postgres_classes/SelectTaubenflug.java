@@ -18,11 +18,11 @@ public class SelectTaubenflug implements PostgresDAO {
     private boolean preis;
     private int rang;
     private double distance;
-    private String zuechter;
+    private String besitzer;
     private int saison;
 
     public SelectTaubenflug(String besitzer, int saison) {
-        this.zuechter = besitzer;
+        this.besitzer = besitzer;
         this.saison = saison;
     }
 
@@ -32,13 +32,13 @@ public class SelectTaubenflug implements PostgresDAO {
     }
 
     public SelectTaubenflug(String idTaube, String idFlug, String endzeit, String preis, String rang, String distance,
-            String zuechter) {
+            String besitzer) {
         this(idTaube, idFlug);
         this.endzeit = java.sql.Timestamp.valueOf(endzeit);
         this.preis = Boolean.valueOf(preis);
         this.rang = Integer.parseInt(rang);
         this.distance = Double.parseDouble(distance);
-        this.zuechter = zuechter;
+        this.besitzer = besitzer;
 
     }
 
@@ -73,14 +73,14 @@ public class SelectTaubenflug implements PostgresDAO {
         int i = -1;
 
         try {
-            String SQL = "update taubenflug set endzeit = ?, preis = ?, rang = ?, distance = ?, zuechter = ?  where taubenflug.taubenid = ? and taubenflug.flugid = ?";
+            String SQL = "update taubenflug set endzeit = ?, preis = ?, rang = ?, distance = ?, besitzer = ?  where taubenflug.taubenid = ? and taubenflug.flugid = ?";
             ps = conn.prepareStatement(SQL);
 
             ps.setTimestamp(1, this.endzeit);
             ps.setBoolean(2, this.preis);
             ps.setInt(3, this.rang);
             ps.setDouble(4, this.distance);
-            ps.setString(5, this.zuechter);
+            ps.setString(5, this.besitzer);
             ps.setString(6, this.idTaube);
             ps.setString(7, this.idFlug);
 
@@ -103,7 +103,7 @@ public class SelectTaubenflug implements PostgresDAO {
     public List<String> create(Connection conn) {
         List<String> list = new ArrayList<>();
         try {
-            String SQL = "insert into taubenflug (taubenid, flugid, endzeit, preis, rang, distance, zuechter) values (?,?,?,?,?,?,?)";
+            String SQL = "insert into taubenflug (taubenid, flugid, endzeit, preis, rang, distance, besitzer) values (?,?,?,?,?,?,?)";
             ps = conn.prepareStatement(SQL);
             ps.setString(1, this.idTaube);
             ps.setString(2, this.idFlug);
@@ -111,7 +111,7 @@ public class SelectTaubenflug implements PostgresDAO {
             ps.setBoolean(4, this.preis);
             ps.setInt(5, this.rang);
             ps.setDouble(6, this.distance);
-            ps.setString(7, this.zuechter);
+            ps.setString(7, this.besitzer);
 
             rs = ps.executeQuery();
 
@@ -136,19 +136,44 @@ public class SelectTaubenflug implements PostgresDAO {
             // taubenflug, flug where taubenflug.zuechter = ? and flug.saison = ? group by
             // taubenflug.taubenid order by count(taubenflug.preis) desc,
             // taubenflug.taubenid;";
-            String SQL = "select taubenflug.taubenid, coalesce (sum(case when taubenflug.preis then ? else ? end),?) from  taubenflug, flug where taubenflug.zuechter = ? and flug.saison = ? group by taubenflug.taubenid order by count(taubenflug.preis) desc, taubenflug.taubenid;";
+            String SQL = "select taubenflug.taubenid, coalesce (sum(case when taubenflug.preis then ? else ? end),?) from  taubenflug, flug where taubenflug.besitzer = ? and flug.saison = ? group by taubenflug.taubenid order by count(taubenflug.preis) desc, taubenflug.taubenid;";
             ps = conn.prepareStatement(SQL);
 
             ps.setInt(1, 1);
             ps.setInt(2, 0);
             ps.setInt(3, 0);
-            ps.setString(4, this.zuechter);
+            ps.setString(4, this.besitzer);
             ps.setInt(5, this.saison);
 
             rs = ps.executeQuery();
 
             while (rs.next()) {
                 list.add("    Taubenid: " + rs.getString(1) + "    Preise: " + rs.getString(2));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public List<String> percent(Connection conn) {
+        List<String> list = new ArrayList<>();
+        try {
+            String SQL = "select (select count(taubenflug.taubenid) from taubenflug, taube, flug where taubenflug.taubenid like ? and taubenflug.flugid = ? and taubenflug.distance/ (extract (epoch from(taubenflug.endzeit - flug.auflasszeit))/?) > ? and taube.taubenid = taubenflug.taubenid and flug.flugid = taubenflug.flugid )*?/ (select count(taubenflug.taubenid) from taubenflug, taube, flug where taubenflug.taubenid like ? and taubenflug.flugid = ? and taube.taubenid = taubenflug.taubenid and flug.flugid = taubenflug.flugid);";
+            ps = conn.prepareStatement(SQL);
+            ps.setString(1, this.idTaube.substring(0, 5).concat("%"));
+            ps.setString(2, this.idFlug);
+            ps.setInt(3, 60);
+            ps.setInt(4, 680);
+            ps.setInt(5, 100);
+            ps.setString(6, this.idTaube.substring(0, 5).concat("%"));
+            ps.setString(7, this.idFlug);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add("    Prozent schneller als Fluggeschwindigkeit: " + rs.getString(1));
             }
         } catch (Exception e) {
             e.printStackTrace();
