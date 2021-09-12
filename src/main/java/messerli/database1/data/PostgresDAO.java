@@ -11,7 +11,9 @@ public interface PostgresDAO {
 
     List<String> drop(Connection conn);
 
-    List<String> create(Connection conn);
+    int createTaube(Connection conn);
+
+    int createTaubeUndFlug(Connection conn);
 
     List<String> list(Connection conn);
 

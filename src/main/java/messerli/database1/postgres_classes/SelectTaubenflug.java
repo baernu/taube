@@ -22,6 +22,11 @@ public class SelectTaubenflug implements PostgresDAO {
     private int saison;
     private int minutenmeter;
 
+    public SelectTaubenflug(String idTaube, String besitzer, int i) {
+        this.idTaube = idTaube;
+        this.besitzer = besitzer;
+    }
+
     public SelectTaubenflug(String besitzer, int saison) {
         this.besitzer = besitzer;
         this.saison = saison;
@@ -107,29 +112,22 @@ public class SelectTaubenflug implements PostgresDAO {
     }
 
     @Override
-    public List<String> create(Connection conn) {
-        List<String> list = new ArrayList<>();
+    public int createTaube(Connection conn) {
+        int i = -1;
         try {
-            String SQL = "insert into taubenflug (taubenid, flugid, endzeit, preis, rang, distance, besitzer) values (?,?,?,?,?,?,?)";
+            String SQL = "insert into taube values (?, ?, ?, ?);";
             ps = conn.prepareStatement(SQL);
             ps.setString(1, this.idTaube);
-            ps.setString(2, this.idFlug);
-            ps.setTimestamp(3, this.endzeit);
-            ps.setBoolean(4, this.preis);
-            ps.setInt(5, this.rang);
-            ps.setDouble(6, this.distance);
-            ps.setString(7, this.besitzer);
+            ps.setString(2, null);
+            ps.setString(3, null);
+            ps.setString(4, this.besitzer);
+            i = ps.executeUpdate();
 
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                list.add(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3));
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return list;
+        return i;
 
     }
 
@@ -186,6 +184,28 @@ public class SelectTaubenflug implements PostgresDAO {
             e.printStackTrace();
         }
         return list;
+    }
+
+    @Override
+    public int createTaubeUndFlug(Connection conn) {
+        int i = -1;
+        try {
+            String SQL = "insert into taubenflug values (?, ?, ?, ?, ?, ?, ?);";
+            ps = conn.prepareStatement(SQL);
+            ps.setString(1, this.idTaube);
+            ps.setString(2, this.idFlug);
+            ps.setTimestamp(3, this.endzeit);
+            ps.setBoolean(4, this.preis);
+            ps.setInt(5, this.rang);
+            ps.setDouble(6, this.distance);
+            ps.setString(7, this.besitzer);
+            i = ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return i;
     }
 
 }

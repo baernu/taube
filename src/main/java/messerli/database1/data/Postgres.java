@@ -36,8 +36,8 @@ public class Postgres {
 
 	}
 
-	public static List<String> main2(PostgresDAO pdao) {
-		return pdao.create(conn);
+	public static int main2(PostgresDAO pdao) {
+		return pdao.createTaube(conn);
 	}
 
 	public static int main3(PostgresDAO pdao) {
@@ -50,6 +50,10 @@ public class Postgres {
 
 	public static List<String> main5(PostgresDAO pdao) {
 		return pdao.percent(conn);
+	}
+
+	public static int main6(PostgresDAO pdao) {
+		return pdao.createTaubeUndFlug(conn);
 	}
 
 }

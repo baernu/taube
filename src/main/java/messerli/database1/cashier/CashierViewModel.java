@@ -2,7 +2,6 @@ package messerli.database1.cashier;
 
 import java.util.List;
 
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import messerli.database1.data.Postgres;
@@ -201,6 +200,29 @@ public class CashierViewModel {
 
     public void clearBtnClickedMinutenMeter() {
         this.minutenmeter.setValue("");
+    }
+
+    public void createTaube() {
+        Postgres postgres = new Postgres();
+        postgres.connect();
+        PostgresDAO pdao = new SelectTaubenflug(taubenId.get(), besitzer.get(), 1);
+
+        int i = Postgres.main2(pdao);
+
+        this.taubenflugtext.setValue(String.valueOf(i));
+        System.out.println(i);
+    }
+
+    public void createTaubeUndFlug() {
+        Postgres postgres = new Postgres();
+        postgres.connect();
+        PostgresDAO pdao = new SelectTaubenflug(taubenId.get(), flugId.get(), endzeit.get(), preis.get(), rang.get(),
+                distance.get(), besitzer.get());
+
+        int i = Postgres.main6(pdao);
+
+        this.taubenflugtext.setValue(String.valueOf(i));
+        System.out.println(i);
     }
 
 }
