@@ -21,6 +21,7 @@ public class SelectTaubenflug implements PostgresDAO {
     private String besitzer;
     private int saison;
     private int minutenmeter;
+    private int bewertung;
 
     public SelectTaubenflug(String idTaube, String besitzer, int i) {
         this.idTaube = idTaube;
@@ -35,6 +36,12 @@ public class SelectTaubenflug implements PostgresDAO {
     public SelectTaubenflug(String idTaube, String idFlug) {
         this.idTaube = idTaube;
         this.idFlug = idFlug;
+    }
+
+    public SelectTaubenflug(String idFlug, int bewertung, String besitzer) {
+        this.idFlug = idFlug;
+        this.bewertung = bewertung;
+        this.besitzer = besitzer;
     }
 
     public SelectTaubenflug(String idTaube, String idFlug, String minutenmeter) {
@@ -199,6 +206,25 @@ public class SelectTaubenflug implements PostgresDAO {
             ps.setInt(5, this.rang);
             ps.setDouble(6, this.distance);
             ps.setString(7, this.besitzer);
+            i = ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return i;
+    }
+
+    @Override
+    public int bewertung(Connection conn) {
+        int i = -1;
+        try {
+            String SQL = "insert into result values (?, ?, ?);";
+            ps = conn.prepareStatement(SQL);
+
+            ps.setString(1, this.idFlug);
+            ps.setString(2, this.besitzer);
+            ps.setInt(3, this.bewertung);
             i = ps.executeUpdate();
 
         } catch (Exception e) {

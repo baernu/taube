@@ -2,6 +2,7 @@ package messerli.database1.cashier;
 
 import java.util.List;
 
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import messerli.database1.data.Postgres;
@@ -20,6 +21,7 @@ public class CashierViewModel {
     private StringProperty besitzer;
     private StringProperty saison;
     private StringProperty minutenmeter;
+    private StringProperty bewertung;
 
     public CashierViewModel(DataModel model) {
         taubenId = new SimpleStringProperty("");
@@ -32,6 +34,7 @@ public class CashierViewModel {
         besitzer = new SimpleStringProperty("");
         saison = new SimpleStringProperty("");
         minutenmeter = new SimpleStringProperty("");
+        bewertung = new SimpleStringProperty("");
 
         model.addStateChangedLister(new StateChangedListener() {
 
@@ -223,6 +226,38 @@ public class CashierViewModel {
 
         this.taubenflugtext.setValue(String.valueOf(i));
         System.out.println(i);
+    }
+
+    public void bewerten() {
+        Postgres postgres = new Postgres();
+        postgres.connect();
+        PostgresDAO pdao = new SelectTaubenflug(flugId.get(), changeToIntValue(bewertung.get()), besitzer.get());
+
+        int i = Postgres.main7(pdao);
+
+        this.taubenflugtext.setValue(String.valueOf(i));
+        System.out.println(i);
+    }
+
+    public StringProperty getBewertung() {
+        return this.bewertung;
+    }
+
+    public int changeToIntValue(String bewertung) {
+        switch (bewertung) {
+            case "sehr gut":
+                return 5;
+            case "gut":
+                return 4;
+            case "ok":
+                return 3;
+            case "schlecht":
+                return 2;
+            case "miserabel":
+                return 1;
+            default:
+                return 0;
+        }
     }
 
 }

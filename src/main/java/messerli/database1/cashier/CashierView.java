@@ -2,6 +2,7 @@ package messerli.database1.cashier;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -48,6 +49,16 @@ public class CashierView extends HBox {
         Button clearbtnminutenmeter = new Button("clear");
         Button btncreatetaube = new Button("create Taube");
         Button btncreatetaubeundflug = new Button("create Taube und Flug");
+        Button btnbewertung = new Button("Flug bewerten");
+
+        ChoiceBox<String> choiceBox = new ChoiceBox<>();
+        choiceBox.setId("choiceBox");
+        choiceBox.getItems().add("sehr gut");
+        choiceBox.getItems().add("gut");
+        choiceBox.getItems().add("ok");
+        choiceBox.getItems().add("schlecht");
+        choiceBox.getItems().add("miserabel");
+        choiceBox.setPadding(insets);
 
         tfTaube.setPadding(insets);
         tfFlug.setPadding(insets);
@@ -74,6 +85,7 @@ public class CashierView extends HBox {
         clearbtnminutenmeter.setPadding(insets);
         btncreatetaube.setPadding(insets);
         btncreatetaubeundflug.setPadding(insets);
+        btnbewertung.setPadding(insets);
 
         GridPane gridPane = new GridPane();
         gridPane.setPadding(insets);
@@ -107,6 +119,8 @@ public class CashierView extends HBox {
         gridPane.add(clearbtnminutenmeter, 1, 11);
         gridPane.add(btncreatetaube, 0, 12);
         gridPane.add(btncreatetaubeundflug, 1, 12);
+        gridPane.add(choiceBox, 2, 2);
+        gridPane.add(btnbewertung, 2, 3);
 
         this.getChildren().add(gridPane);
 
@@ -120,6 +134,7 @@ public class CashierView extends HBox {
         tfBesitzer.textProperty().bindBidirectional(cashierViewModel.getBesitzer());
         tfSaison.textProperty().bindBidirectional(cashierViewModel.getSaison());
         tfMinutenMeter.textProperty().bindBidirectional(cashierViewModel.getMinutenMeter());
+        choiceBox.valueProperty().bindBidirectional(cashierViewModel.getBewertung());
 
         clearbtntaube.setOnAction(event -> {
 
@@ -141,22 +156,16 @@ public class CashierView extends HBox {
         });
 
         clearbtnpreis.setOnAction(event -> cashierViewModel.clearBtnClickedPreis());
-
         clearbtnrang.setOnAction(event -> cashierViewModel.clearBtnClickedRang());
-
         clearbtndistance.setOnAction(event -> cashierViewModel.clearBtnClickedDistance());
-
         clearbtnbesitzer.setOnAction(event -> cashierViewModel.clearBtnClickedBesitzer());
-
         clearbtnsaison.setOnAction(event -> cashierViewModel.clearBtnClickedSaison());
-
         btnsaisonergebnis.setOnAction(event -> cashierViewModel.saisonErgebnis());
-
         btnpercent.setOnAction(event -> cashierViewModel.percent());
-
         clearbtnminutenmeter.setOnAction(event -> cashierViewModel.clearBtnClickedMinutenMeter());
         btncreatetaube.setOnAction(event -> cashierViewModel.createTaube());
         btncreatetaubeundflug.setOnAction(event -> cashierViewModel.createTaubeUndFlug());
+        btnbewertung.setOnAction(event -> cashierViewModel.bewerten());
 
     }
 

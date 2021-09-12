@@ -56,4 +56,8 @@ public class Postgres {
 		return pdao.createTaubeUndFlug(conn);
 	}
 
+	public static int main7(PostgresDAO pdao) {
+		return pdao.bewertung(conn);
+	}
+
 }

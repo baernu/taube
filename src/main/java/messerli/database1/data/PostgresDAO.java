@@ -15,6 +15,8 @@ public interface PostgresDAO {
 
     int createTaubeUndFlug(Connection conn);
 
+    int bewertung(Connection conn);
+
     List<String> list(Connection conn);
 
     List<String> percent(Connection conn);
